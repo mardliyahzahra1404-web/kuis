@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tebak Kata Fiqh - Pokok-Pokok Dasar Islam</title>
+<style>
+:root{
+  --navy:#172554;--blue:#2563eb;--cyan:#06b6d4;--yellow:#facc15;
+  --pink:#f472b6;--green:#16a34a;--red:#dc2626;--ink:#172033;
+  --paper:#f8fbff;--muted:#64748b;
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);
+ background:radial-gradient(circle at 10% 10%,#dbeafe 0,transparent 28%),
+ radial-gradient(circle at 90% 20%,#fce7f3 0,transparent 25%),
+ linear-gradient(135deg,#eef2ff,#ecfeff);padding:18px}
+button,input{font:inherit}
+button{cursor:pointer;touch-action:manipulation}
+.app{max-width:1050px;margin:0 auto}
+header{background:linear-gradient(120deg,#172554,#1d4ed8 60%,#0891b2);color:white;border-radius:26px;padding:24px 28px;box-shadow:0 14px 35px #1e3a8a30;position:relative;overflow:hidden}
+header:after{content:"✦";position:absolute;right:28px;top:-25px;font-size:130px;color:#ffffff18}
+.kicker{font-weight:800;letter-spacing:2px;font-size:.82rem;color:#bae6fd}
+h1{font-size:clamp(1.8rem,4vw,3rem);line-height:1.1;margin:8px 0}
+header p{margin:8px 0 0;color:#dbeafe;font-size:1rem}
+.identity{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.pill{background:#ffffff20;border:1px solid #ffffff35;padding:8px 13px;border-radius:999px;font-weight:700;font-size:.9rem}
+main{display:grid;grid-template-columns:1fr 290px;gap:18px;margin-top:18px}
+.panel{background:#ffffffeb;border:1px solid #dbeafe;border-radius:24px;padding:22px;box-shadow:0 10px 28px #1e3a8a12}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.tag{background:#dbeafe;color:#1d4ed8;padding:8px 13px;border-radius:999px;font-weight:900}
+.progress-wrap{height:12px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:15px 0 22px}
+.progress{height:100%;width:0;background:linear-gradient(90deg,#06b6d4,#2563eb);border-radius:99px;transition:width .3s}
+.question-label{color:#64748b;font-weight:800;font-size:.9rem;text-transform:uppercase;letter-spacing:1px}
+.clue{font-size:clamp(1.25rem,2.8vw,1.8rem);font-weight:850;line-height:1.35;margin:12px 0 18px;color:#172554}
+.hint{background:#fffbeb;border:1px solid #fde68a;border-radius:16px;padding:13px 15px;color:#854d0e;margin-bottom:18px;line-height:1.45}
+.answer-row{display:flex;gap:10px}
+input{width:100%;min-width:0;border:2px solid #cbd5e1;border-radius:16px;padding:16px 18px;font-size:1.15rem;outline:none;background:white}
+input:focus{border-color:#2563eb;box-shadow:0 0 0 4px #2563eb20}
+.primary,.secondary,.soft{border:0;border-radius:16px;padding:15px 20px;font-weight:900;font-size:1rem;min-height:56px}
+.primary{background:linear-gradient(135deg,#2563eb,#0891b2);color:white;box-shadow:0 6px 14px #2563eb30}
+.secondary{background:#e0e7ff;color:#1e40af}
+.soft{background:#f1f5f9;color:#334155}
+.primary:active,.secondary:active,.soft:active{transform:scale(.98)}
+.feedback{min-height:58px;margin-top:14px;border-radius:15px;padding:13px 15px;font-weight:750;line-height:1.4;background:#f1f5f9;color:#475569}
+.feedback.good{background:#dcfce7;color:#166534}
+.feedback.bad{background:#fee2e2;color:#991b1b}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.actions button{flex:1}
+.side{display:flex;flex-direction:column;gap:14px}
+.score-card{background:linear-gradient(145deg,#fef3c7,#fde68a);border-radius:20px;padding:18px;color:#713f12}
+.score-card small{font-weight:800;letter-spacing:1px}
+.score{font-size:3rem;line-height:1.1;font-weight:950;margin:6px 0}
+.stat{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #e2e8f0;font-weight:750}
+.stat:last-child{border:0}
+.rules h3{margin:0 0 10px;color:#172554}
+.rules ul{padding-left:20px;margin:0;color:#475569;line-height:1.6}
+.mini-note{font-size:.86rem;color:#64748b;line-height:1.5}
+footer{text-align:center;color:#64748b;font-size:.85rem;padding:18px}
+.modal{display:none;position:fixed;inset:0;background:#0f172acc;z-index:5;padding:18px;align-items:center;justify-content:center}
+.modal.show{display:flex}
+.modal-box{max-width:560px;width:100%;background:white;border-radius:26px;padding:28px;text-align:center;box-shadow:0 25px 80px #0005}
+.modal-box h2{font-size:2rem;color:#172554;margin:8px 0}
+.big-emoji{font-size:3.5rem}
+.answer-key{background:#eff6ff;border-radius:16px;padding:14px;margin:16px 0;text-align:left;line-height:1.6}
+@media(max-width:760px){body{padding:10px}main{grid-template-columns:1fr}.panel{padding:18px}header{padding:22px}.side{display:grid;grid-template-columns:1fr 1fr}.rules{grid-column:1/-1}}
+@media(max-width:480px){.side{display:flex}.answer-row{flex-direction:column}.answer-row button{width:100%}.actions button{min-width:100%}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="kicker">ARENA BELAJAR • FIQH KELAS XII</div>
+  <h1>🧩 TEBAK KATA<br>Pokok-Pokok Dasar Islam</h1>
+  <p>Asah pemahamanmu, temukan jawabannya, dan raih skor tertinggi!</p>
+  <div class="identity">
+    <span class="pill">Mata Pelajaran: Fiqh</span>
+    <span class="pill">Kelas: XII</span>
+    <span class="pill">Mode: Tebak Kata</span>
+  </div>
+</header>
+
+<main>
+<section class="panel">
+  <div class="topline">
+    <span class="tag" id="roundTag">SOAL 1 / 8</span>
+    <span style="font-weight:800;color:#64748b" id="pointsTag">+100 poin / jawaban benar</span>
+  </div>
+  <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+  <div class="question-label">Baca petunjuk, lalu tebak kata</div>
+  <div class="clue" id="clue">Memuat soal...</div>
+  <div class="hint" id="hint"><b>💡 Petunjuk:</b> ...</div>
+  <form id="answerForm" class="answer-row" autocomplete="off">
+    <input id="answer" type="text" placeholder="Ketik jawabanmu di sini..." aria-label="Jawaban" autocapitalize="characters">
+    <button class="primary" type="submit" id="checkBtn">PERIKSA ✓</button>
+  </form>
+  <div class="feedback" id="feedback" aria-live="polite">Tulis jawaban, lalu tekan tombol PERIKSA.</div>
+  <div class="actions">
+    <button class="secondary" id="hintBtn" type="button">🔎 Lihat Petunjuk Tambahan</button>
+    <button class="soft" id="nextBtn" type="button" disabled>Soal Berikutnya →</button>
+  </div>
+</section>
+
+<aside class="side">
+  <div class="score-card">
+    <small>SKOR SEMENTARA</small>
+    <div class="score" id="score">0</div>
+    <div style="font-weight:800">Poin</div>
+  </div>
+  <div class="panel">
+    <div class="stat"><span>Terjawab benar</span><strong id="correct">0</strong></div>
+    <div class="stat"><span>Kesempatan</span><strong id="attempts">0</strong></div>
+    <div class="stat"><span>Sisa soal</span><strong id="remaining">8</strong></div>
+  </div>
+  <div class="panel rules">
+    <h3>📌 Cara Bermain</h3>
+    <ul>
+      <li>Baca petunjuk pada setiap soal.</li>
+      <li>Ketik kata yang paling tepat.</li>
+      <li>Jawaban benar pada percobaan pertama mendapat 100 poin.</li>
+      <li>Jika salah, coba lagi. Skor soal berkurang 20 poin setiap jawaban salah.</li>
+      <li>Gunakan petunjuk tambahan jika diperlukan.</li>
+    </ul>
+    <p class="mini-note">Materi berfokus pada sumber/dasar penetapan hukum Islam yang disepakati: Al-Qur’an, Sunnah/Hadis, Ijma’, dan Qiyas.</p>
+  </div>
+</aside>
+</main>
+<footer>Belajar Fiqh dengan aktif, cermat, dan menyenangkan ✨</footer>
+</div>
+
+<div class="modal" id="resultModal" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+  <div class="modal-box">
+    <div class="big-emoji" id="resultEmoji">🏆</div>
+    <h2 id="resultTitle">Permainan Selesai!</h2>
+    <p id="resultText">Hasil permainanmu.</p>
+    <div class="answer-key" id="review"></div>
+    <button class="primary" id="restartBtn" type="button" style="width:100%">🔄 ULANGI PERMAINAN</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+const questions = [
+ {word:"ALQURAN",clue:"Pedoman utama umat Islam yang merupakan kalam Allah Swt. dan menjadi sumber hukum Islam pertama.",hint:"Kitab suci umat Islam yang diturunkan kepada Nabi Muhammad saw.",extra:"Terdiri atas 114 surah."},
+ {word:"SUNNAH",clue:"Segala perkataan, perbuatan, dan ketetapan Nabi Muhammad saw. yang menjadi sumber hukum setelah Al-Qur’an.",hint:"Sering juga disebut Hadis.",extra:"Contohnya tata cara salat yang dijelaskan melalui praktik Nabi."},
+ {word:"IJMA",clue:"Kesepakatan para mujtahid umat Islam setelah wafatnya Nabi Muhammad saw. mengenai suatu hukum syariat.",hint:"Kata ini bermakna kesepakatan.",extra:"Contohnya kesepakatan ulama tentang kewajiban azan Jumat dalam kondisi yang memenuhi ketentuannya."},
+ {word:"QIYAS",clue:"Menetapkan hukum suatu perkara baru dengan membandingkannya pada perkara yang sudah ada hukumnya karena memiliki sebab hukum (‘illat) yang sama.",hint:"Metode penetapan hukum dengan analogi atau perbandingan.",extra:"Contoh: narkotika yang memabukkan/merusak akal diharamkan dengan mengaitkannya pada larangan khamar."},
+ {word:"HARAM",clue:"Hukum taklifi untuk perbuatan yang dilarang syariat; jika dilakukan berdosa dan jika ditinggalkan karena taat mendapat pahala.",hint:"Contoh perilaku: mencuri dan menipu.",extra:"Larangan ini dapat diketahui melalui dalil syariat."},
+ {word:"WAJIB",clue:"Hukum taklifi untuk perbuatan yang harus dilaksanakan; jika dilakukan mendapat pahala dan jika ditinggalkan berdosa.",hint:"Contoh: melaksanakan salat lima waktu.",extra:"Istilah lain yang sering digunakan adalah fardu."},
+ {word:"MUBAH",clue:"Hukum taklifi untuk perbuatan yang boleh dilakukan atau ditinggalkan; pada asalnya tidak berdosa dan tidak berpahala karena perbuatannya saja.",hint:"Contoh: memilih warna pakaian yang sopan.",extra:"Disebut juga boleh atau jaiz."},
+ {word:"SUNNAH",clue:"Hukum taklifi untuk perbuatan yang dianjurkan; jika dilakukan mendapat pahala dan jika ditinggalkan tidak berdosa.",hint:"Contoh: melaksanakan salat rawatib.",extra:"Jangan tertukar dengan Sunnah sebagai sumber hukum; konteks soal ini adalah hukum taklifi."}
+];
+let index=0,score=0,correct=0,attempts=0,wrongThis=0,answered=false,usedHint=false;
+const $=id=>document.getElementById(id);
+const normalize=s=>s.toLocaleUpperCase('id-ID').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Z0-9]/g,'');
+function render(){
+ const q=questions[index];
+ $('roundTag').textContent=`SOAL ${index+1} / ${questions.length}`;
+ $('progress').style.width=`${index/questions.length*100}%`;
+ $('clue').textContent=q.clue;
+ $('hint').innerHTML='<b>💡 Petunjuk:</b> '+q.hint;
+ $('answer').value='';$('answer').disabled=false;$('checkBtn').disabled=false;
+ $('feedback').className='feedback';$('feedback').textContent='Tulis jawaban, lalu tekan tombol PERIKSA.';
+ $('nextBtn').disabled=true;$('nextBtn').textContent=index===questions.length-1?'Lihat Hasil 🏁':'Soal Berikutnya →';
+ $('hintBtn').disabled=false;wrongThis=0;answered=false;usedHint=false;
+ updateStats();$('answer').focus({preventScroll:true});
+}
+function updateStats(){
+ $('score').textContent=score;$('correct').textContent=correct;$('attempts').textContent=attempts;
+ $('remaining').textContent=questions.length-index-(answered?1:0);
+ $('progress').style.width=`${(index+(answered?1:0))/questions.length*100}%`;
+}
+$('answerForm').addEventListener('submit',e=>{
+ e.preventDefault();if(answered)return;
+ const value=normalize($('answer').value),q=questions[index];attempts++;
+ if(!value){$('feedback').className='feedback bad';$('feedback').textContent='Jawaban belum diisi. Ayo, coba tuliskan kata kuncinya!';updateStats();return;}
+ if(value===normalize(q.word)){
+   const earned=Math.max(20,100-wrongThis*20-(usedHint?10:0));
+   score+=earned;correct++;answered=true;
+   $('feedback').className='feedback good';
+   $('feedback').textContent=`🎉 Tepat sekali! Jawaban: ${q.word}. Kamu mendapat ${earned} poin. ${q.extra}`;
+   $('answer').disabled=true;$('checkBtn').disabled=true;$('hintBtn').disabled=true;$('nextBtn').disabled=false;
+ }else{
+   wrongThis++;
+   $('feedback').className='feedback bad';
+   $('feedback').textContent='Belum tepat. Periksa kembali petunjuknya dan coba lagi, ya! (Skor soal berkurang 20 poin.)';
+ }
+ updateStats();
+});
+$('hintBtn').addEventListener('click',()=>{
+ if(answered||usedHint)return;
+ usedHint=true;$('hint').innerHTML='<b>✨ Petunjuk tambahan:</b> '+questions[index].extra;
+ $('hintBtn').disabled=true;
+});
+$('nextBtn').addEventListener('click',()=>{
+ if(!answered)return;
+ if(index<questions.length-1){index++;render();}else finish();
+});
+function finish(){
+ $('progress').style.width='100%';
+ const pct=Math.round(correct/questions.length*100);
+ $('resultEmoji').textContent=pct>=80?'🏆':pct>=60?'🌟':'💪';
+ $('resultTitle').textContent='Permainan Selesai!';
+ $('resultText').textContent=`Skor akhir: ${score} poin • ${correct} dari ${questions.length} soal terjawab benar (${pct}%).`;
+ $('review').innerHTML='<b>Ulasan jawaban:</b><br>'+questions.map((q,i)=>`${i+1}. ${q.word}`).join(' &nbsp;•&nbsp; ');
+ $('resultModal').classList.add('show');
+}
+function restart(){
+ index=0;score=0;correct=0;attempts=0;wrongThis=0;answered=false;usedHint=false;
+ $('resultModal').classList.remove('show');render();
+}
+$('restartBtn').addEventListener('click',restart);
+render();
+})();
+</script>
+</body>
+</html>
